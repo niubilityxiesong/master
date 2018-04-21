@@ -2,19 +2,20 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MarsRover {
+
     private static final List<String> VALID_COMMANDS = Arrays.asList("L", "R", "M", "B");
     private static final List<String> DIRECTIONS = Arrays.asList("N", "E", "S", "W");
 
     private static final int Y = 1;
     private static final int X = 0;
 
-    public String d;
+    public String direct;
     // position which contains X and Y
-    private int[] p;
+    private int[] position;
 
     public MarsRover(int startingX, int startingY, String direction) {
-        this.p = new int[]{startingX, startingY};
-        this.d = direction;
+        this.position = new int[]{startingX, startingY};
+        this.direct = direction;
     }
 
     public String run(String input) {
@@ -35,16 +36,16 @@ public class MarsRover {
                 move();
             } else if (isRightTurnCommand(command)) {
                 turnRight();
-            } else if (command.equals("L")) {
+            } else if (isLeftTurnCommand(command)) {
                 turnLeft();
             } else if (command.equals("B")) {
-                turnRight();
-                turnRight();
-                move();
-                turnRight();
-                turnRight();
+                TurnBack();
             }
         }
+    }
+
+    private boolean isLeftTurnCommand(String command) {
+        return command.equals("L");
     }
 
     private boolean isRightTurnCommand(String command) {
@@ -52,23 +53,31 @@ public class MarsRover {
     }
 
     private void move() {
-        if (d.equals("N")) {
-            p[Y] += +1;
-        } else if (d.equals("S")) {
-            p[Y] += -1;
-        } else if (d.equals("E")) {
-            p[X] += +1;
-        } else if (d.equals("W")) {
-            p[X] += -1;
+        if (direct.equals("N")) {
+            position[Y] += +1;
+        } else if (direct.equals("S")) {
+            position[Y] += -1;
+        } else if (direct.equals("E")) {
+            position[X] += +1;
+        } else if (direct.equals("W")) {
+            position[X] += -1;
         }
     }
 
+    private void TurnBack() {
+        turnRight();
+        turnRight();
+        move();
+        turnRight();
+        turnRight();
+    }
+
     private void turnLeft() {
-        d = DIRECTIONS.get((DIRECTIONS.indexOf(d) + 3) % DIRECTIONS.size());
+        direct = DIRECTIONS.get((DIRECTIONS.indexOf(direct) + 3) % DIRECTIONS.size());
     }
 
     private void turnRight() {
-        d = DIRECTIONS.get((DIRECTIONS.indexOf(d) + 1) % DIRECTIONS.size());
+        direct = DIRECTIONS.get((DIRECTIONS.indexOf(direct) + 1) % DIRECTIONS.size());
     }
 
     public static void validateCommands(String input, String[] commandArray) {
@@ -80,6 +89,6 @@ public class MarsRover {
     }
 
     private String asString() {
-        return p[X] + " " + p[Y] + " " + d;
+        return position[X] + " " + position[Y] + " " + direct;
     }
 }

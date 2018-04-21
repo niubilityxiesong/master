@@ -43,4 +43,5 @@ public class MarsRoverTest {
     public void should_not_allow_invalid_input() throws Exception {
         rover.run("invalid input");
     }
+
 }
